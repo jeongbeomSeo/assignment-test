@@ -1,0 +1,17 @@
+{
+  "name": "State University",
+  "departments": [
+    {
+      "name": "Computer Science",
+      "courses": [
+        {"code": "CS101", "title": "Intro to Programming", "credits": 3},
+        {"code": "CS102", "title": "Algorithms", "credits": 3}
+      ],
+      "head": {
+        "name": "Dr. Jane Doe",
+        "age": 50,
+        "publications": ["Pub1", "Pub2"]
+      }
+    }
+  ]
+}

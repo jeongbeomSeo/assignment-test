@@ -1,0 +1,9 @@
+{
+  "name": "Example Configuration",
+  "value": "Sample Value",
+  "array": [
+    [3, 6, "dev"],
+    [2, 5, "module"],
+    [4, 7, "test"]
+  ]
+}

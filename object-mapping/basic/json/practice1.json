@@ -1,0 +1,7 @@
+{
+  "type": "Manager",
+  "name": "John Smith",
+  "age": 38,
+  "department": "Sales",
+  "reports": ["Report1", "Report2"]
+}

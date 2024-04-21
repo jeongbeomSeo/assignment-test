@@ -1,0 +1,19 @@
+{
+  "user":"USER_NAME",
+  "title":"TITLE",
+  "content":"CONTENT",
+  "createAt":1713688300903,
+  "commentList":[
+    {"commentId":1,
+      "blogId":1,
+      "content":"COMMENT_CONTENT",
+      "createAt":1713688300928
+    },
+    {
+      "commentId": 2,
+      "blogId": 1,
+      "content": "COMMENT_CONTENT_2",
+      "createAt":1713688300928
+    }
+  ]
+}

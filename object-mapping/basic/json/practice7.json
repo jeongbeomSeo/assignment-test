@@ -1,0 +1,18 @@
+{
+  "status": "success",
+  "data": {
+    "message": "Items fetched successfully",
+    "content": [
+      {
+        "id": 1,
+        "name": "Laptop",
+        "price": 1200.00
+      },
+      {
+        "id": 2,
+        "name": "Smartphone",
+        "price": 800.00
+      }
+    ]
+  }
+}

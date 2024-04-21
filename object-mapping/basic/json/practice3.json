@@ -1,0 +1,12 @@
+{
+  "name": "Best High School",
+  "classes": [
+    {
+      "grade": 10,
+      "students": [
+        {"name": "Alice", "age": 15},
+        {"name": "Bob", "age": 16}
+      ]
+    }
+  ]
+}
