@@ -63,7 +63,7 @@ public class ArrayDeserializer extends StdDeserializer<List<ArrayElement>> {
                 int index2 = jsonParser.getIntValue();
                 jsonParser.nextToken();  // Move to category string
                 String category = jsonParser.getText();
-                elements.add(new ArrayElement(index1, index2, Category.fromJson(category)));
+                elements.add(new ArrayElement(index1, index2, Category.fromJson(category.toUpperCase())));
                 jsonParser.nextToken();  // Skip past the end of the current array
             }
         }
