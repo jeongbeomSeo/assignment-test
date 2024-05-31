@@ -2,9 +2,8 @@ package org.example.api.dto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.api.dto.response.LocationResponse;
-import org.example.api.dto.response.StartResponse;
-import org.example.api.dto.response.TruckResponse;
+import org.example.api.dto.request.CommandsRequest;
+import org.example.api.dto.response.*;
 import org.example.api.util.UriCreator;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -53,6 +52,28 @@ public class ApiClient {
 
         log.info("Api call, Api = truck");
         return restTemplate.exchange(uri, HttpMethod.GET, entity, TruckResponse.class);
+    }
+
+    public HttpEntity<SimulateResponse> simulateApiCall(String authKey, CommandsRequest commandsRequest) {
+        String uri = UriCreator.simulateUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", authKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<CommandsRequest> entity = new HttpEntity<>(commandsRequest, headers);
+
+        log.info("Api Call, Api = simulate, body = {}", commandsRequest);
+        return restTemplate.exchange(uri, HttpMethod.PUT, entity, SimulateResponse.class);
+    }
+
+    public HttpEntity<ScoreResponse> scoreApiCall(String authKey) {
+        String uri = UriCreator.scoreUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", authKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        log.info("Api Call, Api = score");
+        return restTemplate.exchange(uri, HttpMethod.GET, entity, ScoreResponse.class);
     }
 
 }
