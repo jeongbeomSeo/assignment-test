@@ -1,10 +1,15 @@
 package org.example.util;
 
+import org.example.model.Commands;
+import org.example.model.Location;
 import org.example.model.Truck;
 
 import java.util.List;
 
 public class UtilTruck {
+    /**
+     * 해당 위치로 이동 가능한 트럭이 없을 경우 null return
+     */
     public static Truck findNearestTruck(List<Truck> truckList, int locationId, int[] remainTimes) {
 
         int minDist = Integer.MAX_VALUE;
@@ -23,8 +28,48 @@ public class UtilTruck {
 
         return truckList.get(idx);
     }
+    public static void loadedBike(Location location, int[] remainTimes, Truck truck, List<Commands> commandsList) {
+        int initBikeCount = location.getLocatedBikesCount();
+        while (remainTimes[truck.getId()] != 0) {
+            if (truck.getLoadedBikesCount() >= 5 || location.getLocatedBikesCount() - 1 < (initBikeCount + 1) / 2) break;
 
-    public static int[] moveTruck(int curPos, int targetPos) {
+            truck.setLoadedBikesCount(truck.getLoadedBikesCount() + 1);
+            location.setLocatedBikesCount(location.getLocatedBikesCount() - 1);
+            commandsList.get(truck.getId()).getCommand().add(5);
+
+            remainTimes[truck.getId()] -= 6;
+        }
+    }
+    public static void unloadBike(Location location, int[] remainTimes, Truck truck, List<Commands> commandsList) {
+        while (remainTimes[truck.getId()] != 0) {
+            if (truck.getLoadedBikesCount() == 0 || location.getLocatedBikesCount() >= 3) break;
+
+            truck.setLoadedBikesCount(truck.getLoadedBikesCount() - 1);
+            location.setLocatedBikesCount(location.getLocatedBikesCount() + 1);
+            commandsList.get(truck.getId()).getCommand().add(6);
+
+            remainTimes[truck.getId()] -= 6;
+        }
+    }
+    public static void moveTargetPoint(int targetPos, int[] remainTimes, Truck truck, List<Commands> commandsList) {
+        while (remainTimes[truck.getId()] != 0) {
+            int curPos = truck.getLocationId();
+            /**
+             * ele1: 방향(direction)
+             * ele2: 도착한 위치의 location ID
+             */
+            int[] moveResult = move(curPos, targetPos);
+            commandsList.get(truck.getId()).getCommand().add(moveResult[0]);
+            truck.setLocationId(moveResult[1]);
+
+            remainTimes[truck.getId()] -= 6;
+
+            // 목표 지점에 도착을 하였다면 멈추기
+            if (moveResult[1] == targetPos) break;
+        }
+    }
+
+    private static int[] move(int curPos, int targetPos) {
         if (curPos > targetPos) {
             if (curPos / 5 > targetPos / 5) {
                 return new int[]{4, curPos - 5};
