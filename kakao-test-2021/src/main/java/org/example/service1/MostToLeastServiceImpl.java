@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.service1;
 
 import org.example.api.dto.request.CommandsRequest;
 import org.example.model.Commands;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NearByOneServiceImpl implements Service {
+public class MostToLeastServiceImpl implements Service {
     @Override
     public CommandsRequest simulate(List<Truck> truckList, List<Location> locationList) {
 
@@ -23,12 +23,12 @@ public class NearByOneServiceImpl implements Service {
         int[] remainTimes = new int[truckList.size()];
         Arrays.fill(remainTimes, 60);
 
-        boolean[] isVisited = new boolean[locationList.size()];
-        while(true) {
+        while (true) {
             Location leastLocation = UtilLocation.leastLocation(locationList);
+            Location mostLocation = UtilLocation.mostLocation(locationList);
 
-            // 최소 바이크 수가 2개 이상이거나 이전 방문 지역이 나올 경우 로직을 종료한다.
-            if (leastLocation.getLocatedBikesCount() >= 2 || isVisited[leastLocation.getId()]) {
+            // 최소 바이크 수가 2개 이상이거나 최소 바이크 수와 최대 바이크 수가 같거나 1개 더 많다면 움직일 필요가 없다.
+            if (leastLocation.getLocatedBikesCount() >= 2 || leastLocation.getLocatedBikesCount() + 1 >= mostLocation.getLocatedBikesCount()) {
                 break;
             }
 
@@ -36,8 +36,8 @@ public class NearByOneServiceImpl implements Service {
              * 가용할 트럭 선정
              * 바이크가 많은 지역 -> 바이크가 적은 지역 이동이므로 많은 지역과 가까운 트럭으로 선정
              */
-            Truck truck = UtilTruck.findNearestTruck(truckList, leastLocation.getId(), remainTimes);
-            if (truck == null) {
+            Truck truck = UtilTruck.findNearestTruck(truckList, mostLocation.getId(), remainTimes);
+            if (remainTimes[truck.getId()] == 0) {
                 break;
             }
 
@@ -45,21 +45,15 @@ public class NearByOneServiceImpl implements Service {
              * 트럭의 타임이 여유가 있든 없든 이동할 수 있는 만큼이라도 이동하기
              */
 
-            // 근처 가장 많은 수를 보유한 위치로 이동
-            Location targetLocation = UtilLocation.mostLocationByNearestLocation(locationList, leastLocation.getId());
+            UtilTruck.moveTargetPoint(mostLocation.getId(), remainTimes, truck, commandsList);
 
-            if (targetLocation == null) break;
-
-            UtilTruck.moveTargetPoint(targetLocation.getId(), remainTimes, truck, commandsList);
-
-            UtilTruck.loadedBike(targetLocation, remainTimes, truck, commandsList);
+            UtilTruck.loadedBike(mostLocation, remainTimes, truck, commandsList);
 
             UtilTruck.moveTargetPoint(leastLocation.getId(), remainTimes, truck, commandsList);
 
             UtilTruck.unloadBike(leastLocation, remainTimes, truck, commandsList);
-
-            isVisited[leastLocation.getId()] = true;
         }
+
         return new CommandsRequest(commandsList);
     }
 }

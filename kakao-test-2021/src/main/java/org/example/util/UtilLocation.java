@@ -18,6 +18,17 @@ public class UtilLocation {
 
         return locationList.get(leastIdx);
     }
+    public static Location leastLocationRange(List<Location> locationList, int start, int end) {
+        int leastIdx = start;
+
+        for (int i = start + 1; i < end; i++) {
+            if (locationList.get(leastIdx).getLocatedBikesCount() > locationList.get(i).getLocatedBikesCount()) {
+                leastIdx = i;
+            }
+        }
+
+        return locationList.get(leastIdx);
+    }
 
     public static Location mostLocation(List<Location> locationList) {
         int mostIdx = 0;

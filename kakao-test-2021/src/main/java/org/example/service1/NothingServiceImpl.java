@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.service1;
 
 import org.example.api.dto.request.CommandsRequest;
 import org.example.model.Commands;
@@ -11,11 +11,8 @@ import java.util.List;
 public class NothingServiceImpl implements Service {
     @Override
     public CommandsRequest simulate(List<Truck> truckList, List<Location> locationList) {
-        List<Commands> commands = new ArrayList<>();
-        for (int i = 0; i < truckList.size(); i++) {
-            commands.add(new Commands(truckList.get(i).getId(), new ArrayList<>()));
-        }
+        List<Commands> commandList = initCommandRequest(truckList);
 
-        return new CommandsRequest(commands);
+        return new CommandsRequest(commandList);
     }
 }

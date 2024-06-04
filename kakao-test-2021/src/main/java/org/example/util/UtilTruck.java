@@ -12,21 +12,43 @@ public class UtilTruck {
      */
     public static Truck findNearestTruck(List<Truck> truckList, int locationId, int[] remainTimes) {
 
-        int minDist = Integer.MAX_VALUE;
+        int minValue = Integer.MAX_VALUE;
         int idx = -1;
 
         for (int i = 0; i < truckList.size(); i++) {
             int dist = getDistance(locationId, truckList.get(i).getLocationId());
-            if (remainTimes[truckList.get(i).getId()] < dist * 6 + 12) continue;
-            if (minDist > dist) {
-                minDist = dist;
+            int value = dist * 6 + 12 - remainTimes[truckList.get(i).getId()];
+            if (minValue > value) {
+                minValue = value;
+                idx = i;
+            }
+        }
+
+        return truckList.get(idx);
+    }
+
+    public static Truck findNearestTruckRange(List<Truck> truckList, int locationId, int[] remainTimes, int start, int end) {
+
+        int minValue = Integer.MAX_VALUE;
+        int idx = -1;
+
+        for (int i = start; i < end; i++) {
+            int dist = getDistance(locationId, truckList.get(i).getLocationId());
+            if (remainTimes[truckList.get(i).getId()] == 0) continue;
+            int value = dist * 6 + 12 - remainTimes[truckList.get(i).getId()];
+            if (minValue > value) {
+                minValue = value;
                 idx = i;
             }
         }
 
         if (idx == -1) return null;
-
         return truckList.get(idx);
+    }
+
+    public static boolean canGoTargetLocation(Truck truck, int[] times, int locationId) {
+        int dist = getDistance(locationId, truck.getLocationId());
+        return times[truck.getId()] < dist * 6 + 12;
     }
     public static void loadedBike(Location location, int[] remainTimes, Truck truck, List<Commands> commandsList) {
         int initBikeCount = location.getLocatedBikesCount();

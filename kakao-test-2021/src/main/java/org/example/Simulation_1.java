@@ -4,15 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.api.dto.ApiClient;
 import org.example.api.dto.request.CommandsRequest;
 import org.example.api.dto.response.*;
-import org.example.service.MostToLeastServiceImpl;
-import org.example.service.NearByOneServiceImpl;
-import org.example.service.NearBySomeServiceImpl;
-import org.example.service.Service;
+import org.example.service1.MostToLeastServiceImpl;
+import org.example.service1.NearByOneServiceImpl;
+import org.example.service1.Service;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 public class Simulation_1 {
+    private static final Integer problem = 1;
+
+    private static ApiClient apiClient = new ApiClient(new RestTemplate());
 
     public static void main(String[] args) {
 
@@ -20,13 +22,12 @@ public class Simulation_1 {
         int time;
         Float totalFailCount = 0F;
         Float totalDistance = 0F;
-        ApiClient apiClient = new ApiClient(new RestTemplate());
 //        Service service = new NothingServiceImpl();
-//        Service service = new MostToLeastServiceImpl();
-        Service service = new NearByOneServiceImpl();
+        Service service = new MostToLeastServiceImpl();
+//        Service service = new NearByOneServiceImpl();
 //        Service service = new NearBySomeServiceImpl();
 
-        HttpEntity<StartResponse> startHttpEntity = apiClient.startApiCall(X_AUTH_TOKEN, 1);
+        HttpEntity<StartResponse> startHttpEntity = apiClient.startApiCall(X_AUTH_TOKEN, problem);
         StartResponse startResponse = startHttpEntity.getBody();
         log.info(startResponse.toString());
 
@@ -79,7 +80,7 @@ Total Distance = 409.1
 Score = 273.7471
 
 4. NearBySomeServiceImpl
-Service = class org.example.service.NearBySomeServiceImpl,
+Service = class org.example.service.NearBySomeServiceImpl
 Total Fail Count = 153.0
 Total Distance = 442.3
 Score = 267.62137

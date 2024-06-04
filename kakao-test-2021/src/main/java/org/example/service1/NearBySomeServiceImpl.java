@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.service1;
 
 import org.example.api.dto.request.CommandsRequest;
 import org.example.model.Commands;
@@ -38,7 +38,7 @@ public class NearBySomeServiceImpl implements Service{
              * 바이크가 많은 지역 -> 바이크가 적은 지역 이동이므로 많은 지역과 가까운 트럭으로 선정
              */
             Truck truck = UtilTruck.findNearestTruck(truckList, leastLocation.getId(), remainTimes);
-            if (truck == null) {
+            if (remainTimes[truck.getId()] == 0) {
                 break;
             }
 
